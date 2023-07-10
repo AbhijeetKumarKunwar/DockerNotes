@@ -1,0 +1,217 @@
+=>Docker is an open platform for developpin,shippin and running applicaitons.
+Docker is a platform which packages an applicaitions and all its dependency together in the form of 
+containers.
+
+=>Problem solved by docker:-
+suppose we create some app in one system using 2.x  version of pythonn and u need to run this in
+in other system which is having py 3.x in such case we won't be able to run the app. so , docker can solve this problem by createing the image of the 
+applicaiton which will include all the dependency i.e py 2.x would also be ther in the image which means we will run the image on other system.
+=>image ->shipped->run as container
+\
+
+
+Understand the Docker:-
+
+	4.Container 1-{jdk 11,sqa 5.1}, container 2{ jdk 17,sql 8.2}//these containers can be run on other system too
+        3.Docker Engine.....{Manages containers}//docker engine install on host os and can manges the containers which will having different parellel apps and s/f
+	2.Host Operating system---------{windos,linux,mac}//if we have to run multiple version of s/f we might have to use parellel virtual sytem on our host os.
+        1.Hardware ---{ram,motherboard,ssd}
+
+
+
+=>DockerFile-
+Text document which contains all the commands that a user can call on the command line to assemble an image.
+
+=>Docker Images:-
+Template to create docker container.
+it will contain all the behavior and attibute of images 
+it is like class of object which contains all the contains of object.
+
+=>Docker container:-
+Running instance of the docker image. containers hold entire package to run the application.
+
+==>DockerFile=-Build----->docker images----run--=>Docker container.
+
+
+-------------------Installing docker on system--------------
+docker exe for windows:-https://docs.docker.com/desktop/install/windows-install/
+WSL 2 backend :-wsl 2 is  mandatory for installing docker into our system.
+we can check the steps from website in system requirement;
+=>to check the wsl distributions name:-wsl --list --online
+
+C:\Users\abhijeetkumar5>wsl --list --online
+The following is a list of valid distributions that can be installed.
+Install using 'wsl --install -d <Distro>'.
+
+NAME                                   FRIENDLY NAME
+Ubuntu                                 Ubuntu
+Debian                                 Debian GNU/Linux
+kali-linux                             Kali Linux Rolling
+Ubuntu-18.04                           Ubuntu 18.04 LTS
+Ubuntu-20.04                           Ubuntu 20.04 LTS
+Ubuntu-22.04                           Ubuntu 22.04 LTS
+OracleLinux_7_9                        Oracle Linux 7.9
+OracleLinux_8_7                        Oracle Linux 8.7
+OracleLinux_9_1                        Oracle Linux 9.1
+openSUSE-Leap-15.5                     openSUSE Leap 15.5
+SUSE-Linux-Enterprise-Server-15-SP4    SUSE Linux Enterprise Server 15 SP4
+SUSE-Linux-Enterprise-Server-15-SP5    SUSE Linux Enterprise Server 15 SP5
+openSUSE-Tumbleweed                    openSUSE Tumbleweed
+=>We will install ubantu:-wsl --install -d Ubantu
+
+ now it will start to install.//create userid and password for linex
+
+->install docker.exe file and check the wsl .
+
+
+=> after install , on cmd check docker -v {for version}
+=>docker run hello-word =>image not found locally. so,, it will try to pull the image for such name from internet.
+
+Hello from Docker!
+This message shows that your installation appears to be working correctly.
+To generate this message, Docker took the following steps:
+ 1. The Docker client contacted the Docker daemon.
+ 2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
+    (amd64)
+ 3. The Docker daemon created a new container from that image which runs the
+    executable that produces the output you are currently reading.
+ 4. The Docker daemon streamed that output to the Docker client, which sent it
+    to your terminal.
+
+C:\Users\abhijeetkumar5>docker images				//to check the images
+REPOSITORY    TAG       IMAGE ID       CREATED        SIZE	//details of images on docker hub
+hello-world   latest    9c7a54a9a43c   2 months ago   13.3kB
+
+       --------------------------DOCKER COMMANDS---------------------
+docker version=> docker -v   OR docker --version
+Image pull =>docker pull image_name
+Docker Run==>docker run image_name //it will run from system or dockerhub
+docker pull openjdk
+=>search command==> docker search mysql				// it will give the details of that image
+=>check images==> docker images
+=>Run images==>we can give image name or id==>docker run python
+===>it will be run and stop we could't see it use below command:-
+docker ps   //check if container is running or not
+docker ps -a
+
+===>Run the container in detached mode:-
+docker run --name pythonContainer -d python{containerName to run}
+
+C:\Users\abhijeetkumar5>docker run --name pythonContainer1 -d python
+9c3dbd5cc2b5956b9bb2d95b4b5549e47d265ba3273f2deed103f27da5c0e938
+
+o/p:-
+C:\Users\abhijeetkumar5>docker run --name pythonContainer python
+
+C:\Users\abhijeetkumar5>docker ps -a
+CONTAINER ID   IMAGE         COMMAND     CREATED         STATUS                     PORTS     NAMES
+cf5561bf0af2   python        "python3"   6 seconds ago   Exited (0) 5 seconds ago             pythonContainer  //name
+98688688a94f   openjdk       "jshell"    9 minutes ago   Exited (0) 9 minutes ago             priceless_carver
+
+For the above case container is running and getting stop after execute.
+so,we need  to run in intractive mode:-
+
+C:\Users\abhijeetkumar5>docker run --name pythonRunInIntractiveMode -d -it python   //{-it is intractive mode}
+d86c75ca296bba7d579332afdf8c565ea5580cd90c770c33df6682db532190ef
+
+C:\Users\abhijeetkumar5>docker ps							//we can see container is running not stop in intractive mode
+CONTAINER ID   IMAGE     COMMAND     CREATED          STATUS          PORTS     NAMES
+d86c75ca296b   python    "python3"   12 seconds ago   Up 11 seconds             pythonRunInIntractiveMode
+
+//it is running from one minutes
+C:\Users\abhijeetkumar5>docker ps
+CONTAINER ID   IMAGE     COMMAND     CREATED              STATUS              PORTS     NAMES
+d86c75ca296b   python    "python3"   About a minute ago   Up About a minute             pythonRunInIntractiveMode
+
+
+Now we can go inside out container to using execute command:-{exec}
+
+docker exec -it {image_id} {command}
+docker exec -it d86c75ca296b python3
+
+//now we will be inside python3 container:-
+
+C:\Users\abhijeetkumar5>docker exec -it d86c75ca296b python3
+
+Python 3.11.4 (main, Jul  4 2023, 05:25:16) [GCC 12.2.0] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> print("hello world")
+hello world
+
+>>> 2+2
+4
+>>> class Test:
+...    pass
+...
+>>> ob=Test()
+>>> print(ob)
+//we saw that we are running python on the parellel os of our system.
+
+==>> exit() //we can come out of the python container
+
+------Docker inspect container_id //will give the details of container
+
+==>Running java container:-
+C:\Users\abhijeetkumar5>docker run --name javacontainer -it -d openjdk
+a92321450011bc27bd23fb8c193840ec4cb1b7d9b42484b0d34f55218de064eb
+
+C:\Users\abhijeetkumar5>docker ps
+CONTAINER ID   IMAGE     COMMAND     CREATED          STATUS          PORTS     NAMES
+a92321450011   openjdk   "jshell"    5 seconds ago    Up 4 seconds              javacontainer
+d86c75ca296b   python    "python3"   14 minutes ago   Up 14 minutes             pythonRunInIntractiveMode
+
+executing in java container:-
+ 
+C:\Users\abhijeetkumar5>docker exec -it javacontainer{containerName} jshell{command}
+|  Welcome to JShell -- Version 18.0.2.1
+|  For an introduction type: /help intro
+
+jshell> System.out.println("Hello world");
+Hello world
+
+jshell> System.out.println(Math.pow(10,2));
+100.0
+Java is working here....
+
+jshell> /history  //this will give the history of opereation we performed
+
+jshell> /exit    	//for exiting the java, but container is still running
+|  Goodbye
+
+C:\Users\abhijeetkumar5>docker pull mysql
+
+C:\Users\abhijeetkumar5>docker run --name mysqlDb  -e MYSQL_ROOT_PASSWORD=root -d mysql   //-e environment variable for mysql 
+cc79caecc4b7b437b0d1a5fd889fd6429bba81418e0b61af128ef5782ab6f2db
+
+C:\Users\abhijeetkumar5>docker ps
+CONTAINER ID   IMAGE     COMMAND                  CREATED          STATUS          PORTS                 NAMES
+cc79caecc4b7   mysql     "docker-entrypoint.s…"   2 minutes ago    Up 2 minutes    3306/tcp, 33060/tcp   mysqlDb
+a92321450011   openjdk   "jshell"                 20 minutes ago   Up 20 minutes                         javacontainer
+d86c75ca296b   python    "python3"                34 minutes ago   Up 34 minutes                         pythonRunInIntractiveMode
+
+C:\Users\abhijeetkumar5>docker exec -it mysqlDb bash
+bash-4.4# mysql -p
+Enter password:
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 8
+Server version: 8.0.33 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2023, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
+
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+4 rows in set (0.01 sec)
